@@ -3,9 +3,7 @@ Attribute VB_Name = "Module1"
 Function validateSender(Sender As String) As Integer
     
     'On 0, sender's email address is verified, else, script will terminate.
-    If InStr(Sender, "@uoguelph.ca") Then
-        validateSender = 0
-    ElseIf InStr(Sender, "@safdrives.com") Then
+    If InStr(Sender, "@uoguelph.ca") Or InStr(Sender, "@safdrives.com") Then
         validateSender = 0
     Else
         validateSender = 1
@@ -46,22 +44,30 @@ Public Sub SavePhotos(Message As Outlook.MailItem)
         
         'Validating the existence of the directory
         If FolderExists = "" Then
-            MsgBox "Error, folder directory for """ & Message.Subject & """ does not exist. Nothing was uploaded."
+            MsgBox "Error, folder directory for """ & Message.Subject & """ does not exist. Nothing was uploaded. Please check exact spelling and formatting of subject."
         Else
         
+            Dim isError As Integer
+            isError = 1
+            
             'Validating and transferring each attachment to folder destination.
             For Each oAttachment In Message.Attachments
                 If (validateFileExt(oAttachment.DisplayName) = 0) Then
                     On Error GoTo ErrorHandler
                     oAttachment.SaveAsFile FolderDest & oAttachment.DisplayName
+                    isError = 0
                 End If
             Next
-            
-            MsgBox "Pictures have been uploaded to " + FolderDest
-            
+
+'if isError = 1, there is an error in uploading file
+ErrorHandler:
+            If (isError = 1) Then
+                MsgBox "Error in uploading images."
+            Else
+                MsgBox "Pictures have been uploaded to " + FolderDest
+            End If
         End If
         
     End If
 
-ErrorHandler:
 End Sub
