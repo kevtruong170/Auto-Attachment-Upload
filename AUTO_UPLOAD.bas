@@ -9,6 +9,7 @@ Function validateSender(Sender As String) As Integer
     End If
     
 End Function
+
 'Validating the file extension of the attachments
 Function validateFileExt(fName As String) As Integer
     
@@ -20,6 +21,8 @@ Function validateFileExt(fName As String) As Integer
     End If
     
 End Function
+
+'Functionality to create a folder when user responds, yes.
 Function makeDir(newPath As String) As Integer
 
     Dim fs As Object
@@ -32,6 +35,7 @@ Function makeDir(newPath As String) As Integer
 
 endFunc:
 End Function
+
 Public Sub SavePhotos(Message As Outlook.MailItem)
     MsgBox "running"
     'Use if statement to restrict it to specific users of email addresses
