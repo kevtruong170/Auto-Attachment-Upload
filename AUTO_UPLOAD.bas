@@ -37,7 +37,7 @@ endFunc:
 End Function
 
 Public Sub SavePhotos(Message As Outlook.MailItem)
-    MsgBox "running"
+
     'Use if statement to restrict it to specific users of email addresses
     If (validateSender(Message.SenderEmailAddress) = 0) Then
         
@@ -77,6 +77,11 @@ Public Sub SavePhotos(Message As Outlook.MailItem)
             
             
 NewFolder:
+            If (Message.Attachments.Count = 0) Then
+                isError = 3
+                GoTo ErrorHandler
+            End If
+            
             'Validating and transferring each attachment to folder destination.
             For Each oAttachment In Message.Attachments
                 isError = 1
@@ -93,6 +98,8 @@ ErrorHandler:
                 MsgBox "Error in uploading images."
             ElseIf (isError = 2) Then
                 MsgBox "Error when creating folder, invalid folder title. Please check message subject."
+            ElseIf (isError = 3) Then
+                MsgBox "Message has no attachments, folder has been created but is empty."
             Else
                 MsgBox "Pictures have been uploaded to " + FolderDest
             End If
