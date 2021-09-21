@@ -99,7 +99,7 @@ ErrorHandler:
             ElseIf (isError = 2) Then
                 MsgBox "Error when creating folder, invalid folder title. Please check message subject."
             ElseIf (isError = 3) Then
-                MsgBox "Message has no attachments, folder has been created but is empty."
+                MsgBox "Message has no attachments, folder exists but is empty."
             Else
                 MsgBox "Pictures have been uploaded to " + FolderDest
             End If
