@@ -3,7 +3,7 @@ Attribute VB_Name = "Module1"
 Function validateSender(Sender As String) As Integer
     
     'On 0, sender's email address is verified, else, script will terminate.
-    If InStr(Sender, "@uoguelph.ca") Or InStr(Sender, "@safdrives.com") Then
+    If InStr(Sender, "@uoguelph.ca") Then
         validateSender = 0
     Else
         validateSender = 1
