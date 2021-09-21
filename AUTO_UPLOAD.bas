@@ -48,10 +48,10 @@ Public Sub SavePhotos(Message As Outlook.MailItem)
         Else
         
             Dim isError As Integer
-            isError = 1
             
             'Validating and transferring each attachment to folder destination.
             For Each oAttachment In Message.Attachments
+                isError = 1
                 If (validateFileExt(oAttachment.DisplayName) = 0) Then
                     On Error GoTo ErrorHandler
                     oAttachment.SaveAsFile FolderDest & oAttachment.DisplayName
