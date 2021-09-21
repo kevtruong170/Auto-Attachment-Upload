@@ -1,9 +1,8 @@
-Attribute VB_Name = "Module1"
 'Validating Sender's email address
 Function validateSender(Sender As String) As Integer
     
     'On 0, sender's email address is verified, else, script will terminate.
-    If InStr(Sender, "@uoguelph.ca") Then
+    If InStr(Sender, "@hotmail.com") Then
         validateSender = 0
     Else
         validateSender = 1
@@ -21,9 +20,15 @@ Function validateFileExt(fName As String) As Integer
     End If
     
 End Function
-
-Public Sub SavePhotos(Message As Outlook.MailItem)
+Function createFolder(newPath As String)
     
+    Dim fs As Object
+    Set fs = CreateObject("Scripting.FileSystemObject")
+    fs.createFolder (newPath)
+    
+End Function
+Public Sub SavePhotos(Message As Outlook.MailItem)
+
     'Use if statement to restrict it to specific users of email addresses
     If (validateSender(Message.SenderEmailAddress) = 0) Then
         
@@ -33,7 +38,7 @@ Public Sub SavePhotos(Message As Outlook.MailItem)
         Dim Path As String
         
         'Path of folder location (not actual folder destination, but where it is located).
-        Path = "C:\Users\Kevin\Desktop\TEST\"
+            Path = "C:\USER\PICTURES\"
     
         'Concatenating strings of actual folder destination where photos will be placed.
         FolderDest = Path & Message.Subject & "\"
@@ -44,11 +49,20 @@ Public Sub SavePhotos(Message As Outlook.MailItem)
         
         'Validating the existence of the directory
         If FolderExists = "" Then
-            MsgBox "Error, folder directory for """ & Message.Subject & """ does not exist. Nothing was uploaded. Please check exact spelling and formatting of subject."
+            Dim Response As Integer
+            Response = MsgBox("Error, folder directory for """ & Message.Subject & """ does not exist. Would you like to create a new folder?", vbQuestion + vbYesNo)
+            
+            If (Response = vbYes) Then
+                createFolder (FolderDest)
+                GoTo NewFolder
+            ElseIf (Response = vbNo) Then
+                MsgBox "No folder was created and no pictures were uploaded."
+            End If
         Else
         
             Dim isError As Integer
             
+NewFolder:
             'Validating and transferring each attachment to folder destination.
             For Each oAttachment In Message.Attachments
                 isError = 1
