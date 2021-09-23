@@ -101,7 +101,8 @@ ErrorHandler:
             ElseIf (isError = 3) Then
                 MsgBox "Message has no attachments, folder exists but is empty."
             Else
-                MsgBox "Pictures have been uploaded to " + FolderDest
+                MsgBox "Pictures have been uploaded to " + FolderDest + " email was deleted."
+                Message.delete
             End If
         End If
         
